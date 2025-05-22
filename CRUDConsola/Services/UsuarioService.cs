@@ -26,10 +26,9 @@ namespace CRUDConsola.Services
                 do
                 {
                     Console.WriteLine("Ingrese el nombre del usuario:");
-                    nombre = Console.ReadLine() ?? string.Empty; // Fix: Use null-coalescing operator to ensure a non-null value  
-
+                    nombre = Console.ReadLine() ?? string.Empty; 
                     Console.WriteLine("Ingrese el apellido del usuario:");
-                    apellido = Console.ReadLine() ?? string.Empty; // Fix: Use null-coalescing operator to ensure a non-null value
+                    apellido = Console.ReadLine() ?? string.Empty; 
 
                 } while (!Validador.ValidarNombreApellido(nombre, apellido));
 
@@ -37,13 +36,13 @@ namespace CRUDConsola.Services
                 do
                 {
                     Console.WriteLine("Ingrese el email del usuario:");
-                    email = Console.ReadLine() ?? string.Empty; // Fix: Use null-coalescing operator to ensure a non-null value
+                    email = Console.ReadLine() ?? string.Empty; 
                 } while (!Validador.ValidarEmail(email));
 
                 do
                 {
                     Console.WriteLine("Ingrese la edad del usuario:");
-                    edad = int.Parse(Console.ReadLine() ?? "0"); // Fix: Use null-coalescing operator to ensure a non-null value
+                    edad = int.Parse(Console.ReadLine() ?? "0"); 
                 } while (!Validador.ValidarEdad(edad));
 
             }
@@ -70,7 +69,7 @@ namespace CRUDConsola.Services
             {
                 Console.WriteLine("\n\t¿Desea buscar por ID o Email?");
                 Console.WriteLine("1) ID\n2) Email\n3) Salir");
-                opcion = int.Parse(Console.ReadLine() ?? "0"); // Fix: Use null-coalescing operator to ensure a non-null value
+                opcion = int.Parse(Console.ReadLine() ?? "0"); 
 
                 switch (opcion)
                 {
@@ -98,7 +97,34 @@ namespace CRUDConsola.Services
 
         public static void UpdateUser()
         {
-            
+            int opcion = 0;
+
+            UsuarioStorage.MostrarUsuariosGuardados();
+
+            do
+            {
+                Console.WriteLine("Buscar por ID o Email el usuario a modificar:");
+                Console.WriteLine("1) ID\n2) Email\n3) Salir");
+                opcion = int.Parse(Console.ReadLine() ?? "0"); 
+
+                switch (opcion)
+                {
+                    case 1:
+                        BuscarUsuario.BuscarPorID();
+                        break;
+                    case 2:
+                        BuscarUsuario.BuscarPorEmail();
+                        break;
+                    case 3:
+                        Program.MostrarMenu();
+                        break;
+                    default:
+                        Console.WriteLine("Opción no válida. Intente de nuevo.");
+                        break;
+                }
+
+            } while (true);
+
         }
 
         public static void DeleteUser()

@@ -69,7 +69,7 @@ namespace CRUDConsola.Data
                         try
                         {
                             Usuario? usuario = JsonSerializer.Deserialize<Usuario>(linea);
-                            if (usuario != null) // Ensure the deserialized object is not null
+                            if (usuario != null) 
                             {
                                 Console.WriteLine($"ID: {usuario.Id} ");
                                 Console.WriteLine($"Nombre: {usuario.Nombre} ");
@@ -111,7 +111,7 @@ namespace CRUDConsola.Data
                         try
                         {
                             Usuario? usuario = JsonSerializer.Deserialize<Usuario>(linea);
-                            if (usuario != null && usuario.Id == id) // Ensure the deserialized object is not null and matches the ID
+                            if (usuario != null && usuario.Id == id) 
                             {
                                 Console.WriteLine("\nUsuario encontrado.");
                                 Console.WriteLine(new string('-', 30));
@@ -148,7 +148,7 @@ namespace CRUDConsola.Data
                         try
                         {
                             Usuario? usuario = JsonSerializer.Deserialize<Usuario>(linea);
-                            if (usuario != null && usuario.Email == email) // Ensure the deserialized object is not null and matches the email
+                            if (usuario != null && usuario.Email == email) 
                             {
                                 Console.WriteLine("\nUsuario encontrado.");
                                 Console.WriteLine(new string('-', 30));

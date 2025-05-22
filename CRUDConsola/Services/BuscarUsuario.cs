@@ -16,7 +16,7 @@ namespace CRUDConsola.Services
             do
             {
                 Console.WriteLine("Ingrese el ID del usuario:");
-                id = int.Parse(Console.ReadLine() ?? "0"); // Fix: Use null-coalescing operator to ensure a non-null value
+                id = int.Parse(Console.ReadLine() ?? "0"); 
             } while (!Validador.ValidarID(id));
 
             UsuarioStorage.BuscarUsuarioPorId(id);
@@ -31,7 +31,7 @@ namespace CRUDConsola.Services
             do
             {
                 Console.WriteLine("Ingrese el email del usuario:");
-                email = Console.ReadLine() ?? string.Empty; // Fix: Use null-coalescing operator to ensure a non-null value
+                email = Console.ReadLine() ?? string.Empty; 
             } while (!Validador.ValidarEmail(email));
 
             UsuarioStorage.BuscarUsuarioPorEmail(email);

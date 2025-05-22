@@ -26,10 +26,11 @@ namespace CRUDConsola.Core
             
             Console.WriteLine("\n1. Crear usuario");
             Console.WriteLine("2. Mostrar usuarios");
-            Console.WriteLine("3. Salir");
+            Console.WriteLine("3. Actualizar usuario.");    
+            Console.WriteLine("4. Salir");
             Console.Write("\nSeleccione una opción: ");
 
-            opcion = int.Parse(Console.ReadLine() ?? "0"); // Fix: Use null-coalescing operator to ensure a non-null value
+            opcion = int.Parse(Console.ReadLine() ?? "0"); 
 
             switch (opcion)
             {
@@ -40,7 +41,10 @@ namespace CRUDConsola.Core
                     UsuarioService.ReadUsers();
                     break;
                 case 3:
-                    Environment.Exit(0);
+                    UsuarioService.UpdateUser();
+                    break;
+                case 4:
+                    Environment.Exit(0); 
                     break;
                 default:
                     Console.WriteLine("Opción no válida. Intente de nuevo.");

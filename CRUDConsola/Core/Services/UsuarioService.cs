@@ -1,7 +1,7 @@
-﻿using CRUDConsola.Core;
+﻿using CRUDConsola.ConsoleApp;
+using CRUDConsola.Core.Models;
+using CRUDConsola.Core.Utils;
 using CRUDConsola.Data;
-using CRUDConsola.Models;
-using CRUDConsola.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRUDConsola.Services
+namespace CRUDConsola.Core.Services
 {
     class UsuarioService
     {
@@ -97,6 +97,8 @@ namespace CRUDConsola.Services
 
         public static void UpdateUser()
         {
+
+            //TODO: Implementar la lógica para actualizar un usuario.
             int opcion = 0;
 
             UsuarioStorage.MostrarUsuariosGuardados();

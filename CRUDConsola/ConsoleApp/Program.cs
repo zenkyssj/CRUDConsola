@@ -1,9 +1,8 @@
-﻿
+﻿using CRUDConsola.Core.Services;
 using CRUDConsola.Data;
-using CRUDConsola.Models;
-using CRUDConsola.Services;
+using CRUDConsola.Core.Models;
 
-namespace CRUDConsola.Core
+namespace CRUDConsola.ConsoleApp
 {
     public class Program
     {

@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.Json;
-using CRUDConsola.Models;
-using CRUDConsola.Core;
+using CRUDConsola.Core.Models;
+using CRUDConsola.ConsoleApp;
 
 namespace CRUDConsola.Data
 {

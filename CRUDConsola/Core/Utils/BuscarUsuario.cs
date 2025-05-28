@@ -9,6 +9,8 @@ namespace CRUDConsola.Core.Utils
 {
     internal class BuscarUsuario
     {
+
+        //TODO: Hacer que los metodos retornen un Usuario.
         public static void BuscarPorID()
         {
             int id = 0;

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRUDConsola.Utils
+namespace CRUDConsola.Core.Utils
 {
     internal class Validador
     {

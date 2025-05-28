@@ -170,6 +170,8 @@ namespace CRUDConsola.Data
             }
         }
 
+        
+
         public static int GetNextUserID()
         {
             int maxId = 0;

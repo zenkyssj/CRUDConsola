@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace CRUDConsola.Core.Services
 {
-    class UsuarioService
+    class UserServices
     {
         public static void CreateUser()
         {

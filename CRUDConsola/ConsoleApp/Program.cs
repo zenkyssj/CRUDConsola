@@ -34,13 +34,13 @@ namespace CRUDConsola.ConsoleApp
             switch (opcion)
             {
                 case 1:
-                    UsuarioService.CreateUser();
+                    UserServices.CreateUser();
                     break;
                 case 2:
-                    UsuarioService.ReadUsers();
+                    UserServices.ReadUsers();
                     break;
                 case 3:
-                    UsuarioService.UpdateUser();
+                    UserServices.UpdateUser();
                     break;
                 case 4:
                     Environment.Exit(0); 

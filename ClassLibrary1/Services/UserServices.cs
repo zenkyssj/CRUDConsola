@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Core.Services
 {
 
-    public class UserServices : IServices
+    public class UserServices : IUserServices
     {
         
         private UserStorage _userStorage = new UserStorage();

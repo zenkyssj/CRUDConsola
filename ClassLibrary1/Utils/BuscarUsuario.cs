@@ -1,12 +1,12 @@
-﻿using CRUDConsola.Data;
-using CRUDConsola.Core.Models;
+﻿using Core.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Models;
 
-namespace CRUDConsola.Core.Utils
+namespace Core.Utils
 {
     internal class BuscarUsuario
     {

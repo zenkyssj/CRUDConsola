@@ -5,10 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Text.Json;
-using CRUDConsola.Core.Models;
-using CRUDConsola.ConsoleApp;
+using Core.Models;
 
-namespace CRUDConsola.Data
+namespace Core.Data
 {
     internal class UserStorage
     {
@@ -41,7 +40,7 @@ namespace CRUDConsola.Data
                 Console.WriteLine("Usuario guardado correctamente.");
                 Console.WriteLine("Pulse cualquier tecla para continuar...");
                 Console.ReadKey();
-                Program.MostrarMenu();
+                
 
             }
             catch (Exception e)
@@ -92,7 +91,7 @@ namespace CRUDConsola.Data
                 Console.WriteLine("No hay usuarios guardados.");
                 Console.WriteLine("Pulse cualquier tecla para continuar...");
                 Console.ReadKey();
-                Program.MostrarMenu();
+                
             }
         }
         public Usuario? BuscarUsuarioPorId(int id)
@@ -161,7 +160,7 @@ namespace CRUDConsola.Data
                                 Console.WriteLine($"Edad: {usuario.Edad} ");
                                 Console.WriteLine($"Fecha de Registro: {usuario.FechaRegistro} ");
                                 Console.WriteLine(new string('-', 30));
-                                return usuario; // Return the found user
+                                return usuario; 
                             }
                         }
                         catch (Exception e)
@@ -172,7 +171,7 @@ namespace CRUDConsola.Data
                 }
             }
 
-            return null; // Return null if no user is found
+            return null; 
         }
 
         
@@ -284,7 +283,7 @@ namespace CRUDConsola.Data
             }
             Console.WriteLine("Pulse cualquier tecla para continuar...");
             Console.ReadKey();
-            Program.MostrarMenu();
+            
         
         }  
     }

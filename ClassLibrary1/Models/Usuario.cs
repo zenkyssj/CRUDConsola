@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRUDConsola.Core.Models
+namespace Core.Models
 {
-    internal class Usuario
+    public class Usuario
     {
         private int _id;
         private string _nombre;

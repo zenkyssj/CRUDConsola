@@ -1,13 +1,13 @@
-﻿using CRUDConsola.Data;
+﻿using Core.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRUDConsola.Core.Utils
+namespace Core.Utils
 {
-    internal class Validador
+    public class Validador
     {
         private static UserStorage _userStorage = new UserStorage();
         public static bool ValidarEmail(string email)

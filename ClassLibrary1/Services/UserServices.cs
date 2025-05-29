@@ -1,7 +1,5 @@
-﻿using CRUDConsola.ConsoleApp;
-using CRUDConsola.Core.Models;
-using CRUDConsola.Core.Utils;
-using CRUDConsola.Data;
+﻿using Core.Models;
+using Core.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,12 +7,12 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRUDConsola.Core.Services
+namespace Core.Services
 {
 
-    class UserServices : IServices
+    public class UserServices : IServices
     {
-        //TODO: Hacer uso de Interfaces.  
+        
         private UserStorage _userStorage = new UserStorage();
 
         public void CreateUser(string nombre, string apellido, string email, int edad, DateTime fechaRegistro)

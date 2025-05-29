@@ -1,11 +1,11 @@
-﻿using CRUDConsola.Core.Models;
+﻿using Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CRUDConsola.Core.Services
+namespace Core.Services
 {
     internal interface IServices
     {

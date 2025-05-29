@@ -9,6 +9,7 @@ namespace CRUDConsola.Core.Utils
 {
     internal class Validador
     {
+        private static UserStorage _userStorage = new UserStorage();
         public static bool ValidarEmail(string email)
         {
             // Validar que el email contenga un '@' y un '.'
@@ -52,7 +53,7 @@ namespace CRUDConsola.Core.Utils
 
         public static bool ValidarID(int id)
         {
-            if (id > 0 && id <= UsuarioStorage.GetNextUserID() - 1)
+            if (id > 0 && id <= _userStorage.GetNextUserID() - 1)
             {
                 
                 return true;

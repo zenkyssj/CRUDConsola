@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CRUDConsola.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace CRUDConsola.Core.Services
 {
     internal interface IServices
     {
-        void CreateUser();
-        void ReadUser(int id);
+        void CreateUser(string nombre, string apellido, string email, int edad, DateTime fechaRegistro);
+        List<Usuario> ReadUsers();
         void UpdateUser(int id);
         void DeleteUser(int id);
       

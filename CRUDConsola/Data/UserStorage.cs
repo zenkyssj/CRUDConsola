@@ -10,15 +10,15 @@ using CRUDConsola.ConsoleApp;
 
 namespace CRUDConsola.Data
 {
-    internal class UsuarioStorage
+    internal class UserStorage
     {
 
-        public static void AddUser(Usuario usuario)
+        public void AddUser(Usuario usuario)
         {
             SaveToFile(usuario);
         }
 
-        private static void SaveToFile(Usuario usuario)
+        private void SaveToFile(Usuario usuario)
         {
             string jsonUser = JsonSerializer.Serialize(usuario);
 
@@ -51,7 +51,7 @@ namespace CRUDConsola.Data
 
         }
 
-        public static void MostrarUsuariosGuardados()
+        public void MostrarUsuariosGuardados()
         {
             string folder = "Data";
             string filePath = Path.Combine(folder, "usuarios.json");
@@ -95,7 +95,7 @@ namespace CRUDConsola.Data
                 Program.MostrarMenu();
             }
         }
-        public static void BuscarUsuarioPorId(int id)
+        public Usuario? BuscarUsuarioPorId(int id)
         {
             string folder = "Data";
             string filePath = Path.Combine(folder, "usuarios.json");
@@ -122,6 +122,7 @@ namespace CRUDConsola.Data
                                 Console.WriteLine($"Edad: {usuario.Edad} ");
                                 Console.WriteLine($"Fecha de Registro: {usuario.FechaRegistro} ");
                                 Console.WriteLine(new string('-', 30));
+                                return usuario;
                             }
                         }
                         catch (Exception e)
@@ -131,9 +132,10 @@ namespace CRUDConsola.Data
                     }
                 }
             }
+            return null;
         }
 
-        public static void BuscarUsuarioPorEmail(string email)
+        public Usuario? BuscarUsuarioPorEmail(string email)
         {
             string folder = "Data";
             string filePath = Path.Combine(folder, "usuarios.json");
@@ -148,7 +150,7 @@ namespace CRUDConsola.Data
                         try
                         {
                             Usuario? usuario = JsonSerializer.Deserialize<Usuario>(linea);
-                            if (usuario != null && usuario.Email == email) 
+                            if (usuario != null && usuario.Email == email)
                             {
                                 Console.WriteLine("\nUsuario encontrado.");
                                 Console.WriteLine(new string('-', 30));
@@ -159,6 +161,7 @@ namespace CRUDConsola.Data
                                 Console.WriteLine($"Edad: {usuario.Edad} ");
                                 Console.WriteLine($"Fecha de Registro: {usuario.FechaRegistro} ");
                                 Console.WriteLine(new string('-', 30));
+                                return usuario; // Return the found user
                             }
                         }
                         catch (Exception e)
@@ -168,11 +171,13 @@ namespace CRUDConsola.Data
                     }
                 }
             }
+
+            return null; // Return null if no user is found
         }
 
         
 
-        public static int GetNextUserID()
+        public int GetNextUserID()
         {
             int maxId = 0;
             string folder = "Data";
@@ -205,6 +210,82 @@ namespace CRUDConsola.Data
             return maxId + 1;
         }
 
+        public List<Usuario> GetUsers()
+        {
+            List<Usuario> usuarios = new List<Usuario>();
+            string folder = "Data";
+            string filePath = Path.Combine(folder, "usuarios.json");
+            if (File.Exists(filePath))
+            {
+                var lineas = File.ReadAllLines(filePath);
+                foreach (var linea in lineas)
+                {
+                    if (!string.IsNullOrEmpty(linea))
+                    {
+                        try
+                        {
+                            Usuario? usuario = JsonSerializer.Deserialize<Usuario>(linea);
+                            if (usuario != null)
+                            {
+                                usuarios.Add(usuario);
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine($"Error al deserializar el usuario: {e.Message}");
+                        }
+                    }
+                }
+            }
+            return usuarios;
+        }
 
+        public void DeleteUser(int id)
+        {
+            string folder = "Data";
+            string filePath = Path.Combine(folder, "usuarios.json");
+            if (File.Exists(filePath))
+            {
+                var lineas = File.ReadAllLines(filePath).ToList();
+                bool userFound = false;
+                for (int i = 0; i < lineas.Count; i++)
+                {
+                    if (!string.IsNullOrEmpty(lineas[i]))
+                    {
+                        try
+                        {
+                            Usuario? usuario = JsonSerializer.Deserialize<Usuario>(lineas[i]);
+                            if (usuario != null && usuario.Id == id)
+                            {
+                                lineas.RemoveAt(i);
+                                userFound = true;
+                                break;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine($"Error al deserializar el usuario: {e.Message}");
+                        }
+                    }
+                }
+                if (userFound)
+                {
+                    File.WriteAllLines(filePath, lineas);
+                    Console.WriteLine("Usuario eliminado correctamente.");
+                }
+                else
+                {
+                    Console.WriteLine("Usuario no encontrado.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No hay usuarios guardados.");
+            }
+            Console.WriteLine("Pulse cualquier tecla para continuar...");
+            Console.ReadKey();
+            Program.MostrarMenu();
+        
+        }  
     }
 }

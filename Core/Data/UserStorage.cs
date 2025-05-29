@@ -21,7 +21,7 @@ namespace Core.Data
         {
             string jsonUser = JsonSerializer.Serialize(usuario);
 
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\ClassLibrary1\\Data\\";
+            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
             string filePath = Path.Combine(folder, "users.json");
 
             try
@@ -52,7 +52,7 @@ namespace Core.Data
 
         public void MostrarUsuariosGuardados()
         {
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\ClassLibrary1\\Data\\";
+            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
             string filePath = Path.Combine(folder, "users.json");
 
             if (File.Exists(filePath))
@@ -96,7 +96,7 @@ namespace Core.Data
         }
         public Usuario? BuscarUsuarioPorId(int id)
         {
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\ClassLibrary1\\Data\\";
+            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
             string filePath = Path.Combine(folder, "users.json");
 
             if (File.Exists(filePath))
@@ -136,7 +136,7 @@ namespace Core.Data
 
         public Usuario? BuscarUsuarioPorEmail(string email)
         {
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\ClassLibrary1\\Data\\";
+            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
             string filePath = Path.Combine(folder, "users.json");
 
             if (File.Exists(filePath))
@@ -179,7 +179,7 @@ namespace Core.Data
         public int GetNextUserID()
         {
             int maxId = 0;
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\ClassLibrary1\\Data\\";
+            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
             string filePath = Path.Combine(folder, "users.json");
 
             if (File.Exists(filePath))
@@ -212,7 +212,7 @@ namespace Core.Data
         public List<Usuario> GetUsers()
         {
             List<Usuario> usuarios = new List<Usuario>();
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\ClassLibrary1\\Data\\";
+            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
             string filePath = Path.Combine(folder, "users.json");
             if (File.Exists(filePath))
             {
@@ -241,7 +241,7 @@ namespace Core.Data
 
         public void DeleteUser(int id)
         {
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\ClassLibrary1\\Data\\";
+            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
             string filePath = Path.Combine(folder, "users.json");
             if (File.Exists(filePath))
             {

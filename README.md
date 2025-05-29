@@ -2,9 +2,9 @@
 
 Solucion que implementa un sistema de CRUD para usuarios utilizando tres proyectos
 
--**Core**: Biblioteca de clases que contiene el modelo, la capa de servicios y el manejo de almacenamiento de usuarios.
--**WebApi**: API REST desarrollada en ASP.NET Core (.NET 8) que expone endpoints para gestionar los usuarios.
--**ConsoleApp**: Aplicacion de consola (.NET 8) que permite interactuar con el sistema mediante un menu de opciones.
+- **Core**: Biblioteca de clases que contiene el modelo, la capa de servicios y el manejo de almacenamiento de usuarios.
+- **WebApi**: API REST desarrollada en ASP.NET Core (.NET 8) que expone endpoints para gestionar los usuarios.
+- **ConsoleApp**: Aplicacion de consola (.NET 8) que permite interactuar con el sistema mediante un menu de opciones.
 
 ## Caracteristicas
 

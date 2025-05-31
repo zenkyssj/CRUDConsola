@@ -1,4 +1,6 @@
+using Core.Models;
 using Core.Services;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,12 @@ builder.Services.AddScoped<IPostsService, PostsService>();
 builder.Services.AddHttpClient<IPostsService, PostsService>( c =>
 {
     c.BaseAddress = new Uri(builder.Configuration["BaseUrlPosts"]);
+});
+
+// Database Entity Framework
+builder.Services.AddDbContext<UserContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UserConnection"));
 });
 
 

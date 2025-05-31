@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Text.Json;
 using Core.Models;
+using Core.Utils;
 
 namespace Core.Data
 {
@@ -21,18 +22,16 @@ namespace Core.Data
         {
             string jsonUser = JsonSerializer.Serialize(usuario);
 
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
-            string filePath = Path.Combine(folder, "users.json");
 
             try
             {
-                Directory.CreateDirectory(folder);
+                Directory.CreateDirectory(Const.FOLDER);
 
-                if (!File.Exists(filePath))
+                if (!File.Exists(Const.FILE_PATH))
                 {
-                    File.Create(filePath).Close();
+                    File.Create(Const.FILE_PATH).Close();
                 }
-                using (StreamWriter sw = new StreamWriter(filePath, true))
+                using (StreamWriter sw = new StreamWriter(Const.FILE_PATH, true))
                 {
                     sw.WriteLine(jsonUser);
                 }
@@ -52,14 +51,12 @@ namespace Core.Data
 
         public void MostrarUsuariosGuardados()
         {
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
-            string filePath = Path.Combine(folder, "users.json");
 
-            if (File.Exists(filePath))
+            if (File.Exists(Const.FILE_PATH))
             {
                 Console.WriteLine("\n\n\tUsuarios guardados:\n");
 
-                var lineas = File.ReadAllLines(filePath);
+                var lineas = File.ReadAllLines(Const.FILE_PATH);
 
                 foreach (var linea in lineas)
                 {
@@ -96,12 +93,10 @@ namespace Core.Data
         }
         public Usuario? BuscarUsuarioPorId(int id)
         {
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
-            string filePath = Path.Combine(folder, "users.json");
 
-            if (File.Exists(filePath))
+            if (File.Exists(Const.FILE_PATH))
             {
-                var lineas = File.ReadAllLines(filePath);
+                var lineas = File.ReadAllLines(Const.FILE_PATH);
 
                 foreach (var linea in lineas)
                 {
@@ -136,12 +131,10 @@ namespace Core.Data
 
         public Usuario? BuscarUsuarioPorEmail(string email)
         {
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
-            string filePath = Path.Combine(folder, "users.json");
 
-            if (File.Exists(filePath))
+            if (File.Exists(Const.FILE_PATH))
             {
-                var lineas = File.ReadAllLines(filePath);
+                var lineas = File.ReadAllLines(Const.FILE_PATH);
                 foreach (var linea in lineas)
                 {
                     if (!string.IsNullOrEmpty(linea))
@@ -179,12 +172,10 @@ namespace Core.Data
         public int GetNextUserID()
         {
             int maxId = 0;
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
-            string filePath = Path.Combine(folder, "users.json");
 
-            if (File.Exists(filePath))
+            if (File.Exists(Const.FILE_PATH))
             {
-                var lineas = File.ReadAllLines(filePath);
+                var lineas = File.ReadAllLines(Const.FILE_PATH);
 
                 foreach (var linea in lineas)
                 {
@@ -192,7 +183,7 @@ namespace Core.Data
                     {
                         try
                         {
-                            Usuario usuario = JsonSerializer.Deserialize<Usuario>(linea);
+                            Usuario? usuario = JsonSerializer.Deserialize<Usuario>(linea);
                             if (usuario != null && usuario.Id > maxId)
                             {
                                 maxId = usuario.Id;
@@ -212,11 +203,10 @@ namespace Core.Data
         public List<Usuario> GetUsers()
         {
             List<Usuario> usuarios = new List<Usuario>();
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
-            string filePath = Path.Combine(folder, "users.json");
-            if (File.Exists(filePath))
+
+            if (File.Exists(Const.FILE_PATH))
             {
-                var lineas = File.ReadAllLines(filePath);
+                var lineas = File.ReadAllLines(Const.FILE_PATH);
                 foreach (var linea in lineas)
                 {
                     if (!string.IsNullOrEmpty(linea))
@@ -241,11 +231,10 @@ namespace Core.Data
 
         public void DeleteUser(int id)
         {
-            string folder = "C:\\Users\\Jose Ariel\\Desktop\\dev\\C#\\CRUDConsola\\Core\\Data\\";
-            string filePath = Path.Combine(folder, "users.json");
-            if (File.Exists(filePath))
+
+            if (File.Exists(Const.FILE_PATH))
             {
-                var lineas = File.ReadAllLines(filePath).ToList();
+                var lineas = File.ReadAllLines(Const.FILE_PATH).ToList();
                 bool userFound = false;
                 for (int i = 0; i < lineas.Count; i++)
                 {
@@ -269,7 +258,7 @@ namespace Core.Data
                 }
                 if (userFound)
                 {
-                    File.WriteAllLines(filePath, lineas);
+                    File.WriteAllLines(Const.FILE_PATH, lineas);
                     Console.WriteLine("Usuario eliminado correctamente.");
                 }
                 else

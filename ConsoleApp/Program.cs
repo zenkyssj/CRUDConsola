@@ -56,7 +56,6 @@ namespace ConsoleApp
 
         public static void CreateUser()
         {
-            int id = 0;
             string nombre = string.Empty;
             string apellido = string.Empty;
             string email = string.Empty;

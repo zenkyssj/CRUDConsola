@@ -27,7 +27,6 @@ namespace Core.Services
         {
             List<Usuario> usuarios = _userStorage.GetUsers();
 
-            // Devolver el usuario en una lista  
             return usuarios;
         }
 

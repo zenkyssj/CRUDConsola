@@ -1,68 +1,139 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Core.Services;
 using Core.Models;
+using Core.DTOs;
+using Microsoft.EntityFrameworkCore;
+
 namespace WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
-        private IUserServices _services;
+        private UserContext _context;
 
-        public UserController(IUserServices services)
+        public UserController(UserContext context)
         {
-            _services = services;
+            _context = context;
         }
 
-        [HttpPost]
-        public IActionResult Add(Usuario usuario)
-        {
-            if (string.IsNullOrEmpty(usuario.Nombre))
+
+        [HttpGet]
+        public async Task<IEnumerable<UserDto>> Get() =>
+            await _context.Users.Select(u => new UserDto
             {
-                return BadRequest("El nombre es obligatorio.");
-            }
-
-            if (string.IsNullOrEmpty(usuario.Apellido))
-            {
-                return BadRequest("El apellido es obligatorio.");
-            }
-
-            if (string.IsNullOrEmpty(usuario.Email))
-            {
-                return BadRequest("El email es obligatorio.");
-            }
-
-            if (string.IsNullOrEmpty(usuario.Edad.ToString()) || usuario.Edad <= 0)
-            {
-                return BadRequest("La edad debe ser un número positivo.");
-            }
-
-            _services.CreateUser(usuario.Nombre, usuario.Apellido, usuario.Email, usuario.Edad, DateTime.Now);
-
-            return NoContent();
-
-        }
-
-        [HttpGet("all")]
-        public List<Usuario> Get()
-        {
-            var users = _services.ReadUsers();
-
-            return users;
-        }
+                UserId = u.UserId,
+                Name = u.Name,
+                LastName = u.LastName,
+                Email = u.Email,
+                Password = u.Password,
+                Age = u.Age,
+            }).ToListAsync();
 
         [HttpGet("{id}")]
-        public ActionResult<Usuario> Get(int id)
+        public async Task<ActionResult<UserDto>> GetById(int id)
         {
-            var users = _services.ReadUsers();
-            var user = users.FirstOrDefault(u => u.Id == id);
+            var user = await _context.Users.FindAsync(id);
+
             if (user == null)
             {
                 return NotFound();
             }
-            return Ok(user);
+
+            var userDto = new UserDto
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                LastName = user.LastName,
+                Email = user.Email,
+                Password = user.Password,
+                Age = user.Age,
+            };
+
+            return Ok(userDto);
         }
+
+        [HttpPost]
+        public async Task<ActionResult<UserDto>> Add(UserInsertDto userInserDto)
+        {
+            var user = new User()
+            {
+                Name = userInserDto.Name,
+                LastName = userInserDto.LastName,
+                Email = userInserDto.Email,
+                Password = userInserDto.Password,
+                Age = userInserDto.Age,
+            };
+
+            await _context.Users.AddAsync(user);
+            await _context.SaveChangesAsync();
+
+            var userDto = new UserDto
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                LastName = user.LastName,
+                Email = user.Email,
+                Password = user.Password,
+                Age = user.Age,
+
+            };
+
+            return CreatedAtAction(nameof(GetById), new {id = user.UserId}, userDto);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UserDto>> Update(int id, UserUpdateDto userUpdateDto)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Name = userUpdateDto.Name;
+            user.LastName = userUpdateDto.LastName;
+            user.Email = userUpdateDto.Email;
+            user.Password = userUpdateDto.Password;
+            user.Age = userUpdateDto.Age;
+
+            await _context.SaveChangesAsync();
+
+            var userDto = new UserDto
+            {
+                UserId = user.UserId,
+                Name = user.Name,
+                LastName = user.LastName,
+                Email = user.Email,
+                Password = user.Password,
+                Age = user.Age,
+
+            };
+
+            return Ok(userDto);
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var user = await _context.Users.FindAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            _context.Users.Remove(user);
+
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+
+
 
     }
 }

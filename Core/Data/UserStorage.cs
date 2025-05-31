@@ -49,48 +49,6 @@ namespace Core.Data
 
         }
 
-        public void MostrarUsuariosGuardados()
-        {
-
-            if (File.Exists(Const.FILE_PATH))
-            {
-                Console.WriteLine("\n\n\tUsuarios guardados:\n");
-
-                var lineas = File.ReadAllLines(Const.FILE_PATH);
-
-                foreach (var linea in lineas)
-                {
-                    if (!string.IsNullOrEmpty(linea))
-                    {
-                        try
-                        {
-                            Usuario? usuario = JsonSerializer.Deserialize<Usuario>(linea);
-                            if (usuario != null) 
-                            {
-                                Console.WriteLine($"ID: {usuario.Id} ");
-                                Console.WriteLine($"Nombre: {usuario.Nombre} ");
-                                Console.WriteLine($"Apellido: {usuario.Apellido} ");
-                                Console.WriteLine($"Email: {usuario.Email} ");
-                                Console.WriteLine($"Edad: {usuario.Edad} ");
-                                Console.WriteLine($"Fecha de Registro: {usuario.FechaRegistro} ");
-                                Console.WriteLine(new string('-', 30));
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine($"Error al deserializar el usuario: {e.Message}");
-                        }
-                    }
-                }
-            }
-            else
-            {
-                Console.WriteLine("No hay usuarios guardados.");
-                Console.WriteLine("Pulse cualquier tecla para continuar...");
-                Console.ReadKey();
-                
-            }
-        }
         public Usuario? BuscarUsuarioPorId(int id)
         {
 
@@ -173,29 +131,28 @@ namespace Core.Data
         {
             int maxId = 0;
 
-            if (File.Exists(Const.FILE_PATH))
-            {
-                var lineas = File.ReadAllLines(Const.FILE_PATH);
+            if (!File.Exists(Const.FILE_PATH)) return 0;
+            
+            var lineas = File.ReadAllLines(Const.FILE_PATH);
 
-                foreach (var linea in lineas)
+            foreach (var linea in lineas)
+            {
+                if (string.IsNullOrEmpty(linea)) return 0;
+                
+                try
                 {
-                    if (!string.IsNullOrEmpty(linea))
-                    {
-                        try
-                        {
-                            Usuario? usuario = JsonSerializer.Deserialize<Usuario>(linea);
-                            if (usuario != null && usuario.Id > maxId)
-                            {
-                                maxId = usuario.Id;
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine($"Error al deserializar el usuario: {e.Message}");
-                        }
-                    }
+                    Usuario? usuario = JsonSerializer.Deserialize<Usuario>(linea);
+
+                    if (usuario != null && usuario.Id > maxId) maxId = usuario.Id;
+
                 }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"Error al deserializar el usuario: {e.Message}");
+                }
+                
             }
+            
 
             return maxId + 1;
         }
@@ -204,29 +161,31 @@ namespace Core.Data
         {
             List<Usuario> usuarios = new List<Usuario>();
 
-            if (File.Exists(Const.FILE_PATH))
+            if (!File.Exists(Const.FILE_PATH)) return null;
+            
+            var lineas = File.ReadAllLines(Const.FILE_PATH);
+
+            foreach (var linea in lineas)
             {
-                var lineas = File.ReadAllLines(Const.FILE_PATH);
-                foreach (var linea in lineas)
+                if (string.IsNullOrEmpty(linea)) return null;            
                 {
-                    if (!string.IsNullOrEmpty(linea))
-                    {
-                        try
-                        {
-                            Usuario? usuario = JsonSerializer.Deserialize<Usuario>(linea);
-                            if (usuario != null)
-                            {
-                                usuarios.Add(usuario);
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine($"Error al deserializar el usuario: {e.Message}");
-                        }
-                    }
+                     try
+                     {
+                        Usuario? usuario = JsonSerializer.Deserialize<Usuario>(linea);
+
+                        if (usuario != null) usuarios.Add(usuario);
+                        
+                     }
+                     catch (Exception e)
+                     {
+                        Console.WriteLine($"Error al deserializar el usuario: {e.Message}");
+                     }
                 }
             }
+            
             return usuarios;
+
+            
         }
 
         public void DeleteUser(int id)
@@ -237,8 +196,7 @@ namespace Core.Data
                 var lineas = File.ReadAllLines(Const.FILE_PATH).ToList();
                 bool userFound = false;
                 for (int i = 0; i < lineas.Count; i++)
-                {
-                    if (!string.IsNullOrEmpty(lineas[i]))
+                if (!string.IsNullOrEmpty(lineas[i]))
                     {
                         try
                         {
@@ -250,12 +208,8 @@ namespace Core.Data
                                 break;
                             }
                         }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine($"Error al deserializar el usuario: {e.Message}");
-                        }
+                        catch (Exception e) { Console.WriteLine($"Error al deserializar el usuario: {e.Message}"); }
                     }
-                }
                 if (userFound)
                 {
                     File.WriteAllLines(Const.FILE_PATH, lineas);

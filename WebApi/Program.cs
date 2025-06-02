@@ -1,5 +1,8 @@
+using Core.DTOs;
 using Core.Models;
 using Core.Services;
+using Core.Validators;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +22,9 @@ builder.Services.AddDbContext<UserContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("UserConnection"));
 });
+
+// Validators
+builder.Services.AddScoped<IValidator<UserInsertDto>, UserInsertValidator>();
 
 
 builder.Services.AddControllers();

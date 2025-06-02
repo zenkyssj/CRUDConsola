@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Core.Models;
 using Core.DTOs;
 using Microsoft.EntityFrameworkCore;
+using Core.Validators;
+using FluentValidation;
 
 namespace WebApi.Controllers
 {
@@ -11,10 +13,13 @@ namespace WebApi.Controllers
     public class UserController : ControllerBase
     {
         private UserContext _context;
+        private IValidator<UserInsertDto> _userInsertValidator;
 
-        public UserController(UserContext context)
+        public UserController(UserContext context,
+            IValidator<UserInsertDto> userInsertValidator)
         {
             _context = context;
+            _userInsertValidator = userInsertValidator;
         }
 
 
@@ -56,6 +61,13 @@ namespace WebApi.Controllers
         [HttpPost]
         public async Task<ActionResult<UserDto>> Add(UserInsertDto userInserDto)
         {
+            var validationResult = await _userInsertValidator.ValidateAsync(userInserDto);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             var user = new User()
             {
                 Name = userInserDto.Name,

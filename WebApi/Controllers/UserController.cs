@@ -14,12 +14,15 @@ namespace WebApi.Controllers
     {
         private UserContext _context;
         private IValidator<UserInsertDto> _userInsertValidator;
+        private IValidator<UserUpdateDto> _userUpdateValidator;
 
         public UserController(UserContext context,
-            IValidator<UserInsertDto> userInsertValidator)
+            IValidator<UserInsertDto> userInsertValidator,
+            IValidator<UserUpdateDto> userUpdateValidator)
         {
             _context = context;
             _userInsertValidator = userInsertValidator;
+            _userUpdateValidator = userUpdateValidator;
         }
 
 
@@ -97,6 +100,13 @@ namespace WebApi.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult<UserDto>> Update(int id, UserUpdateDto userUpdateDto)
         {
+            var validationResult = await _userUpdateValidator.ValidateAsync(userUpdateDto);
+
+            if (!validationResult.IsValid)
+            {
+                return BadRequest(validationResult.Errors);
+            }
+
             var user = await _context.Users.FindAsync(id);
 
             if (user == null)

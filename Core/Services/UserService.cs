@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Core.Services
 {
-    public class UserService : IUserService
+    public class UserService : ICommonService<UserDto, UserInsertDto, UserUpdateDto>
     {
         private UserContext _context;
 
@@ -135,6 +135,6 @@ namespace Core.Services
             }
 
             return null;
-        }
+        }             
     }
 }

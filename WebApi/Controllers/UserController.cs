@@ -15,12 +15,12 @@ namespace WebApi.Controllers
     {
         private IValidator<UserInsertDto> _userInsertValidator;
         private IValidator<UserUpdateDto> _userUpdateValidator;
-        private IUserService _userServices;
+        private ICommonService<UserDto, UserInsertDto, UserUpdateDto> _userServices;
 
         public UserController(
             IValidator<UserInsertDto> userInsertValidator,
             IValidator<UserUpdateDto> userUpdateValidator,
-            IUserService userService)
+            [FromKeyedServices("userService")] ICommonService<UserDto, UserInsertDto, UserUpdateDto> userService)
         {
             _userInsertValidator = userInsertValidator;
             _userUpdateValidator = userUpdateValidator;

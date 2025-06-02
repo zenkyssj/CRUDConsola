@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Core.Models;
 using Core.DTOs;
+using Core.Services;
 using Microsoft.EntityFrameworkCore;
 using Core.Validators;
 using FluentValidation;
@@ -12,53 +13,34 @@ namespace WebApi.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private UserContext _context;
         private IValidator<UserInsertDto> _userInsertValidator;
         private IValidator<UserUpdateDto> _userUpdateValidator;
+        private IUserService _userServices;
 
-        public UserController(UserContext context,
+        public UserController(
             IValidator<UserInsertDto> userInsertValidator,
-            IValidator<UserUpdateDto> userUpdateValidator)
+            IValidator<UserUpdateDto> userUpdateValidator,
+            IUserService userService)
         {
-            _context = context;
             _userInsertValidator = userInsertValidator;
             _userUpdateValidator = userUpdateValidator;
+            _userServices = userService;
         }
 
 
         [HttpGet]
         public async Task<IEnumerable<UserDto>> Get() =>
-            await _context.Users.Select(u => new UserDto
-            {
-                UserId = u.UserId,
-                Name = u.Name,
-                LastName = u.LastName,
-                Email = u.Email,
-                Password = u.Password,
-                Age = u.Age,
-            }).ToListAsync();
+            await _userServices.Get();
 
         [HttpGet("{id}")]
         public async Task<ActionResult<UserDto>> GetById(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var userDto = await _userServices.GetById(id);
 
-            if (user == null)
-            {
-                return NotFound();
-            }
 
-            var userDto = new UserDto
-            {
-                UserId = user.UserId,
-                Name = user.Name,
-                LastName = user.LastName,
-                Email = user.Email,
-                Password = user.Password,
-                Age = user.Age,
-            };
+            return userDto == null ? NotFound() : Ok(userDto);
 
-            return Ok(userDto);
+           
         }
 
         [HttpPost]
@@ -71,30 +53,10 @@ namespace WebApi.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
-            var user = new User()
-            {
-                Name = userInserDto.Name,
-                LastName = userInserDto.LastName,
-                Email = userInserDto.Email,
-                Password = userInserDto.Password,
-                Age = userInserDto.Age,
-            };
+            var userDto = await _userServices.Add(userInserDto);
+          
 
-            await _context.Users.AddAsync(user);
-            await _context.SaveChangesAsync();
-
-            var userDto = new UserDto
-            {
-                UserId = user.UserId,
-                Name = user.Name,
-                LastName = user.LastName,
-                Email = user.Email,
-                Password = user.Password,
-                Age = user.Age,
-
-            };
-
-            return CreatedAtAction(nameof(GetById), new {id = user.UserId}, userDto);
+            return CreatedAtAction(nameof(GetById), new {id = userDto.UserId}, userDto);
         }
 
         [HttpPut("{id}")]
@@ -107,55 +69,19 @@ namespace WebApi.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
-            var user = await _context.Users.FindAsync(id);
+            var userDto = await _userServices.Update(id, userUpdateDto);
+            
 
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            user.Name = userUpdateDto.Name;
-            user.LastName = userUpdateDto.LastName;
-            user.Email = userUpdateDto.Email;
-            user.Password = userUpdateDto.Password;
-            user.Age = userUpdateDto.Age;
-
-            await _context.SaveChangesAsync();
-
-            var userDto = new UserDto
-            {
-                UserId = user.UserId,
-                Name = user.Name,
-                LastName = user.LastName,
-                Email = user.Email,
-                Password = user.Password,
-                Age = user.Age,
-
-            };
-
-            return Ok(userDto);
+            return userDto == null ? NotFound() : Ok(userDto);
 
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<ActionResult<UserDto>> Delete(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+           var userDto = await _userServices.Delete(id); 
 
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.Users.Remove(user);
-
-            await _context.SaveChangesAsync();
-
-            return Ok();
+            return userDto == null ? NotFound() : Ok(userDto);
         }
-
-
-
-
     }
 }

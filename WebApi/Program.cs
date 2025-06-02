@@ -8,14 +8,7 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSingleton<IUserServices, UserServices>();
-
-builder.Services.AddScoped<IPostsService, PostsService>();
-
-builder.Services.AddHttpClient<IPostsService, PostsService>( c =>
-{
-    c.BaseAddress = new Uri(builder.Configuration["BaseUrlPosts"]);
-});
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Database Entity Framework
 builder.Services.AddDbContext<UserContext>(options =>

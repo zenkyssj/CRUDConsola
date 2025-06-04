@@ -37,10 +37,7 @@ namespace WebApi.Controllers
         {
             var userDto = await _userServices.GetById(id);
 
-
-            return userDto == null ? NotFound() : Ok(userDto);
-
-           
+            return userDto == null ? NotFound() : Ok(userDto);          
         }
 
         [HttpPost]
@@ -55,7 +52,6 @@ namespace WebApi.Controllers
 
             var userDto = await _userServices.Add(userInserDto);
           
-
             return CreatedAtAction(nameof(GetById), new {id = userDto.UserId}, userDto);
         }
 
@@ -71,9 +67,7 @@ namespace WebApi.Controllers
 
             var userDto = await _userServices.Update(id, userUpdateDto);
             
-
             return userDto == null ? NotFound() : Ok(userDto);
-
         }
 
         [HttpDelete("{id}")]

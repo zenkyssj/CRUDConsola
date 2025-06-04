@@ -1,5 +1,6 @@
 using Core.DTOs;
 using Core.Models;
+using Core.Repository;
 using Core.Services;
 using Core.Validators;
 using FluentValidation;
@@ -9,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddKeyedScoped<ICommonService<UserDto, UserInsertDto, UserUpdateDto>, UserService>("userService");
+
+// Repository
+builder.Services.AddScoped<IRepository<User>, UserRepository>();
 
 // Database Entity Framework
 builder.Services.AddDbContext<UserContext>(options =>

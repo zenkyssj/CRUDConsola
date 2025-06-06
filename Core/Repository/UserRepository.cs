@@ -41,6 +41,10 @@ namespace Core.Repository
         public async Task Save()
             => await _context.SaveChangesAsync();
 
+        public IEnumerable<User> Search(Func<User, bool> filter)
+            => _context.Users.Where(filter).ToList();
+       
+        
 
     }
 }

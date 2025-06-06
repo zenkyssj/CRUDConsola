@@ -50,6 +50,11 @@ namespace WebApi.Controllers
                 return BadRequest(validationResult.Errors);
             }
 
+            if (!_userServices.Validate(userInserDto))
+            {
+                return BadRequest(_userServices.Errors);
+            }
+
             var userDto = await _userServices.Add(userInserDto);
           
             return CreatedAtAction(nameof(GetById), new {id = userDto.UserId}, userDto);
@@ -63,6 +68,11 @@ namespace WebApi.Controllers
             if (!validationResult.IsValid)
             {
                 return BadRequest(validationResult.Errors);
+            }
+
+            if (!_userServices.Validate(userUpdateDto))
+            {
+                return BadRequest(_userServices.Errors);
             }
 
             var userDto = await _userServices.Update(id, userUpdateDto);

@@ -17,11 +17,14 @@ namespace Core.Services
         private IRepository<User> _userRepository;
         private IMapper _mapper;
 
+        public List<string> Errors { get; }
+
         public UserService(IRepository<User> userRepository,
             IMapper mapper)
         {
             _userRepository = userRepository;
             _mapper = mapper;
+            Errors = new List<string>();
         }
 
         public async Task<IEnumerable<UserDto>> Get()
@@ -94,6 +97,28 @@ namespace Core.Services
             }
 
             return null;
-        }             
+        }
+
+        public bool Validate(UserInsertDto insertDto)
+        {
+            if (_userRepository.Search(u => u.Email == insertDto.Email).Count() > 0)
+            {
+                Errors.Add("Ya existe un usuario con el mismo Email.");
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool Validate(UserUpdateDto updateDto)
+        {
+            if (_userRepository.Search(u => u.Email == updateDto.Email && updateDto.UserId != u.UserId).Count() > 0)
+            {
+                Errors.Add("Ya existe un usuario con el mismo Email.");
+                return false;
+            }
+
+            return true;
+        }
     }
 }

@@ -1,3 +1,4 @@
+using Core.Automappers;
 using Core.DTOs;
 using Core.Models;
 using Core.Repository;
@@ -23,6 +24,9 @@ builder.Services.AddDbContext<UserContext>(options =>
 // Validators
 builder.Services.AddScoped<IValidator<UserInsertDto>, UserInsertValidator>();
 builder.Services.AddScoped<IValidator<UserUpdateDto>, UserUpdateValidator>();
+
+// Mappers
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

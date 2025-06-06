@@ -1,4 +1,5 @@
-﻿using Core.DTOs;
+﻿using AutoMapper;
+using Core.DTOs;
 using Core.Models;
 using Core.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -14,26 +15,20 @@ namespace Core.Services
     public class UserService : ICommonService<UserDto, UserInsertDto, UserUpdateDto>
     {
         private IRepository<User> _userRepository;
+        private IMapper _mapper;
 
-        public UserService(IRepository<User> userRepository)
+        public UserService(IRepository<User> userRepository,
+            IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<UserDto>> Get()
         {
             var users = await _userRepository.Get();
 
-            return users.Select(u => new UserDto()
-            {
-                UserId = u.UserId,
-                Name = u.Name,
-                LastName = u.LastName,
-                Email = u.Email,
-                Password = u.Password,
-                Age = u.Age,
-
-            });
+            return users.Select(u => _mapper.Map<UserDto>(u)); 
 
         }
 
@@ -43,15 +38,7 @@ namespace Core.Services
 
             if (user != null)
             {
-                var userDto = new UserDto
-                {
-                    UserId = user.UserId,
-                    Name = user.Name,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    Password = user.Password,
-                    Age = user.Age,
-                };
+                var userDto = _mapper.Map<UserDto>(user);
 
                 return userDto;
             }
@@ -61,28 +48,13 @@ namespace Core.Services
 
         public async Task<UserDto> Add(UserInsertDto userInsertDto)
         {
-            var user = new User()
-            {
-                Name = userInsertDto.Name,
-                LastName = userInsertDto.LastName,
-                Email = userInsertDto.Email,
-                Password = userInsertDto.Password,
-                Age = userInsertDto.Age,
-            };
+            var user = _mapper.Map<User>(userInsertDto);
+
 
             await _userRepository.Add(user);
             await _userRepository.Save();
 
-            var userDto = new UserDto
-            {
-                UserId = user.UserId,
-                Name = user.Name,
-                LastName = user.LastName,
-                Email = user.Email,
-                Password = user.Password,
-                Age = user.Age,
-
-            };
+            var userDto = _mapper.Map<UserDto>(user);
 
             return userDto;
         }
@@ -93,25 +65,13 @@ namespace Core.Services
 
             if (user != null)
             {
-                user.Name = userUpdateDto.Name;
-                user.LastName = userUpdateDto.LastName;
-                user.Email = userUpdateDto.Email;
-                user.Password = userUpdateDto.Password;
-                user.Age = userUpdateDto.Age;
+                user = _mapper.Map<UserUpdateDto, User>(userUpdateDto, user);
+
 
                 _userRepository.Update(user);
                 await _userRepository.Save();
 
-                var userDto = new UserDto
-                {
-                    UserId = user.UserId,
-                    Name = user.Name,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    Password = user.Password,
-                    Age = user.Age,
-
-                };
+                var userDto = _mapper.Map<UserDto>(user);
 
                 return userDto;
             }                
@@ -125,16 +85,7 @@ namespace Core.Services
 
             if (user != null)
             {
-                var userDto = new UserDto
-                {
-                    UserId = user.UserId,
-                    Name = user.Name,
-                    LastName = user.LastName,
-                    Email = user.Email,
-                    Password = user.Password,
-                    Age = user.Age,
-
-                };
+                var userDto = _mapper.Map<UserDto>(user);
 
                 _userRepository.Delete(user);
                 await _userRepository.Save();

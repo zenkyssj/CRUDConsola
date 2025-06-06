@@ -20,7 +20,7 @@ Solucion que implementa un sistema de CRUD para usuarios utilizando tres proyect
 
 - **WebApi:**
   - **POST /api/User**: Crea un usuario nuevo.
-  - **GET /api/User/all**: Obtiene todos los usuarios.
+  - **GET /api/User/**: Obtiene todos los usuarios.
   - **GET /api/User/{id}**: Obtiene un usuario especifico por su ID.
   - **PUT /api/User/{id}**: Actualiza la informacion de un usuario.
   - **DELETE /api/User/{id}**: Elimina un usuario.
